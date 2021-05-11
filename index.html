@@ -1,0 +1,52 @@
+<html>
+
+<head>
+ <title>vize</title>
+</head>
+
+
+<body>
+<style>table, th, td {border: 1px solid black; border-collapse: collapse;text-align: left;padding: 15px;}table{width:100%; min-width:400px;overflow-x: scroll;}
+</style>
+<div>
+    <table id="main" style="width:100%">
+        <tr>
+          <th>Album Id</th>
+          <th>Album Title</th>
+          <th>User Name</th>
+          <th>User Email</th>
+          <th>User Company Name</th>
+          <th>User WebSite</th>
+        </tr>
+      </table>
+</div>
+</body>
+<script>
+
+let userUrl = 'https://jsonplaceholder.typicode.com/users';
+let albumUrl = 'https://jsonplaceholder.typicode.com/albums';
+
+var usersProm = fetch(userUrl).then(function(response){return response.json();});
+var albumProm = fetch(albumUrl).then(function(response){return response.json();});
+
+
+Promise.all([usersProm, albumProm]).then(function(values){
+    const users = values[0];
+    const album = values[1];
+    album.forEach(myFunction);
+
+    console.log(users.find(o => o.id == 1));
+
+
+
+    function myFunction(item, index){
+        user = users.find(o => o.id == item['userId']);
+        document.getElementById("main").innerHTML += '<tr><td>'+ item["id"] +'</td><td>'+ item["title"] +'</td><td>'+ user["name"] +'</td><td>'+ user["email"] +'</td><td>'+ user["company"]["name"] +'</td><td>'+ user["website"]+'</td></tr>';
+        
+    }
+
+});
+
+</script>
+
+</html>
